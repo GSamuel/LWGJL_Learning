@@ -30,9 +30,16 @@ public class MainGameLoop
 		ModelTexture texture = staticModel.getTexture();
 		texture.setShineDamper(10);
 		texture.setReflectivity(1);
+
+		RawModel rosModel = OBJLoader.LoadObjModel("Char", loader);
+		TexturedModel staticRosModel = new TexturedModel(rosModel, new ModelTexture(loader.loadTexture("steve")));
+		texture = staticRosModel.getTexture();
+		texture.setShineDamper(10);
+		texture.setReflectivity(1);
 		
 		Entity entity =  new Entity(staticModel, new Vector3f(0,0,-50f),0,0,0,1);
-		Entity entity2 = new Entity(staticModel, new Vector3f(15f,-3f,-50f),0,0,0,1);
+		Entity rosanne = new Entity(staticRosModel, new Vector3f(-2f,0,-15f),0,0,0,1);
+		
 		Light light = new Light(new Vector3f(0,0,-20), new Vector3f(1,1,1));
 		
 		Terrain terrain = new Terrain(0,0,loader, new ModelTexture(loader.loadTexture("grass")));
@@ -44,12 +51,13 @@ public class MainGameLoop
 		while (!Display.isCloseRequested())
 		{
 			entity.increaseRotation(0,1,0);
+			rosanne.increaseRotation(0,1,0);
 			camera.move();
 
 			renderer.processTerrain(terrain);
 			renderer.processTerrain(terrain2);
 			renderer.processEntity(entity);
-			renderer.processEntity(entity2);
+			renderer.processEntity(rosanne);
 			
 			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
