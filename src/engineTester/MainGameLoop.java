@@ -10,6 +10,7 @@ import renderEngine.DisplayManager;
 import renderEngine.Loader;
 import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
+import terrains.Terrain;
 import textures.ModelTexture;
 import entities.Camera;
 import entities.Entity;
@@ -25,7 +26,7 @@ public class MainGameLoop
 		
 		
 		RawModel model = OBJLoader.LoadObjModel("dragon", loader);
-		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("stallTexture")));
+		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("grass")));
 		ModelTexture texture = staticModel.getTexture();
 		texture.setShineDamper(10);
 		texture.setReflectivity(1);
@@ -34,6 +35,8 @@ public class MainGameLoop
 		Entity entity2 = new Entity(staticModel, new Vector3f(15f,-3f,-50f),0,0,0,1);
 		Light light = new Light(new Vector3f(0,0,-20), new Vector3f(1,1,1));
 		
+		Terrain terrain = new Terrain(0,0,loader, new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain2 = new Terrain(1,0,loader, new ModelTexture(loader.loadTexture("grass")));
 		
 		Camera camera = new Camera();
 		
@@ -43,6 +46,8 @@ public class MainGameLoop
 			entity.increaseRotation(0,1,0);
 			camera.move();
 
+			renderer.processTerrain(terrain);
+			renderer.processTerrain(terrain2);
 			renderer.processEntity(entity);
 			renderer.processEntity(entity2);
 			
