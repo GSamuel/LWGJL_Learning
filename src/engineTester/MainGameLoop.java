@@ -2,6 +2,8 @@ package engineTester;
 
 import models.RawModel;
 import models.TexturedModel;
+import objConverter.ModelData;
+import objConverter.OBJFileLoader;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.util.vector.Vector3f;
@@ -23,6 +25,9 @@ public class MainGameLoop
 	{
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
+		
+		ModelData data = OBJFileLoader.loadOBJ("dragon");
+		RawModel drakeModel = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
 		
 		
 		RawModel model = OBJLoader.LoadObjModel("dragon", loader);
