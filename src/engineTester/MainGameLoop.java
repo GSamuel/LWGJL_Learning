@@ -36,8 +36,8 @@ public class MainGameLoop
 		texture.setShineDamper(10);
 		texture.setReflectivity(1);
 
-		RawModel rosModel = OBJLoader.LoadObjModel("Char", loader);
-		TexturedModel staticRosModel = new TexturedModel(rosModel, new ModelTexture(loader.loadTexture("steve")));
+		RawModel rosModel = OBJLoader.LoadObjModel("tree", loader);
+		TexturedModel staticRosModel = new TexturedModel(rosModel, new ModelTexture(loader.loadTexture("tree")));
 		texture = staticRosModel.getTexture();
 		texture.setShineDamper(10);
 		texture.setReflectivity(1);
