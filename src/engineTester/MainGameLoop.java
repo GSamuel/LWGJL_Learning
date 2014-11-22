@@ -36,16 +36,21 @@ public class MainGameLoop
 		texture = staticRosModel.getTexture();
 		texture.setShineDamper(10);
 		texture.setReflectivity(1);
+		texture.setHasTransparency(true);
+		texture.setUseFakeLighting(true);
 		
 		Entity entity =  new Entity(staticModel, new Vector3f(0,0,-50f),0,0,0,1);
 		Entity rosanne = new Entity(staticRosModel, new Vector3f(-2f,0,-15f),0,0,0,1);
 		
 		Light light = new Light(new Vector3f(0,0,-20), new Vector3f(1,1,1));
 		
-		Terrain terrain = new Terrain(0,0,loader, new ModelTexture(loader.loadTexture("grass")));
-		Terrain terrain2 = new Terrain(1,0,loader, new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain = new Terrain( 0,0,loader, new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain2 = new Terrain( 0,-1,loader, new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain3 = new Terrain(-1, 0,loader, new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain4 = new Terrain(-1,-1,loader, new ModelTexture(loader.loadTexture("grass")));
 		
 		Camera camera = new Camera();
+		camera.setPosition(new Vector3f(0,2,0));
 		
 		MasterRenderer renderer = new MasterRenderer();
 		while (!Display.isCloseRequested())
@@ -56,6 +61,8 @@ public class MainGameLoop
 
 			renderer.processTerrain(terrain);
 			renderer.processTerrain(terrain2);
+			renderer.processTerrain(terrain3);
+			renderer.processTerrain(terrain4);
 			renderer.processEntity(entity);
 			renderer.processEntity(rosanne);
 			
