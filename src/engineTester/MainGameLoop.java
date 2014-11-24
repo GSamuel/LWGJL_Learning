@@ -26,8 +26,11 @@ public class MainGameLoop
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
 		
-		ModelData data = OBJFileLoader.loadOBJ("dragon");
-		RawModel drakeModel = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
+		ModelData data = OBJFileLoader.loadOBJ("fern");
+		RawModel fernModel = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
+		TexturedModel staticFernModel = new TexturedModel(fernModel, new ModelTexture(loader.loadTexture("fern")));
+		staticFernModel.getTexture().setHasTransparency(true);
+		staticFernModel.getTexture().setUseFakeLighting(true);
 		
 		
 		RawModel model = OBJLoader.LoadObjModel("dragon", loader);
@@ -36,16 +39,17 @@ public class MainGameLoop
 		texture.setShineDamper(10);
 		texture.setReflectivity(1);
 
-		RawModel rosModel = OBJLoader.LoadObjModel("tree", loader);
-		TexturedModel staticRosModel = new TexturedModel(rosModel, new ModelTexture(loader.loadTexture("tree")));
+		RawModel rosModel = OBJLoader.LoadObjModel("bunny", loader);
+		TexturedModel staticRosModel = new TexturedModel(rosModel, new ModelTexture(loader.loadTexture("blendMap")));
 		texture = staticRosModel.getTexture();
-		texture.setShineDamper(10);
-		texture.setReflectivity(1);
+		texture.setShineDamper(1);
+		texture.setReflectivity(0.2f);
 		texture.setHasTransparency(true);
 		texture.setUseFakeLighting(true);
 		
 		Entity entity =  new Entity(staticModel, new Vector3f(0,0,-50f),0,0,0,1);
-		Entity rosanne = new Entity(staticRosModel, new Vector3f(-2f,0,-15f),0,0,0,1);
+		Entity rosanne = new Entity(staticRosModel, new Vector3f(-5f,0,-35f),0,0,0,1);
+		Entity fern = new Entity(staticFernModel, new Vector3f(2f,0,-15f),0,0,0,1);
 		
 		Light light = new Light(new Vector3f(0,0,-20), new Vector3f(1,1,1));
 		
@@ -61,7 +65,7 @@ public class MainGameLoop
 		while (!Display.isCloseRequested())
 		{
 			entity.increaseRotation(0,1,0);
-			rosanne.increaseRotation(0,1,0);
+			rosanne.increaseRotation(0,0.1f,0);
 			camera.move();
 
 			renderer.processTerrain(terrain);
@@ -70,6 +74,7 @@ public class MainGameLoop
 			renderer.processTerrain(terrain4);
 			renderer.processEntity(entity);
 			renderer.processEntity(rosanne);
+			renderer.processEntity(fern);
 			
 			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
