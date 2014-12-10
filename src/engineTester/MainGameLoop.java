@@ -14,9 +14,12 @@ import renderEngine.MasterRenderer;
 import renderEngine.OBJLoader;
 import terrains.Terrain;
 import textures.ModelTexture;
+import textures.TerrainTexture;
+import textures.TerrainTexturePack;
 import entities.Camera;
 import entities.Entity;
 import entities.Light;
+import entities.Player;
 
 public class MainGameLoop
 {
@@ -50,15 +53,27 @@ public class MainGameLoop
 		Entity entity =  new Entity(staticModel, new Vector3f(0,0,-50f),0,0,0,1);
 		Entity rosanne = new Entity(staticRosModel, new Vector3f(-5f,0,-35f),0,0,0,1);
 		Entity fern = new Entity(staticFernModel, new Vector3f(2f,0,-15f),0,0,0,1);
+	
+		Player player = new Player(staticFernModel, new Vector3f(2f,0,-15f),0,0,0,1);
+		
+		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy"));
+		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("dirt"));
+		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("pinkFlowers"));
+		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
+
+		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture,rTexture,gTexture,bTexture);
+		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
 		
 		Light light = new Light(new Vector3f(0,0,-20), new Vector3f(1,1,1));
 		
-		Terrain terrain = new Terrain( 0,0,loader, new ModelTexture(loader.loadTexture("grass")));
-		Terrain terrain2 = new Terrain( 0,-1,loader, new ModelTexture(loader.loadTexture("grass")));
-		Terrain terrain3 = new Terrain(-1, 0,loader, new ModelTexture(loader.loadTexture("grass")));
-		Terrain terrain4 = new Terrain(-1,-1,loader, new ModelTexture(loader.loadTexture("grass")));
+		Terrain terrain = new Terrain(0,-1,loader,texturePack,blendMap);
+		Terrain terrain1 = new Terrain(-1,-1,loader,texturePack,blendMap);
+		Terrain terrain2 = new Terrain(1,0,loader,texturePack,blendMap);
+		Terrain terrain3 = new Terrain(-1,0,loader,texturePack,blendMap);
 		
-		Camera camera = new Camera();
+		
+		
+		Camera camera = new Camera(player);
 		camera.setPosition(new Vector3f(0,2,0));
 		
 		MasterRenderer renderer = new MasterRenderer();
@@ -67,11 +82,14 @@ public class MainGameLoop
 			entity.increaseRotation(0,1,0);
 			rosanne.increaseRotation(0,0.1f,0);
 			camera.move();
-
+			player.move();
+			renderer.processEntity(player);
+		
 			renderer.processTerrain(terrain);
+			renderer.processTerrain(terrain1);
 			renderer.processTerrain(terrain2);
 			renderer.processTerrain(terrain3);
-			renderer.processTerrain(terrain4);
+
 			renderer.processEntity(entity);
 			renderer.processEntity(rosanne);
 			renderer.processEntity(fern);
