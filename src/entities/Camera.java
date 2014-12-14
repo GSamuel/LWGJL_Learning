@@ -13,11 +13,11 @@ public class Camera
 	private float yaw;// rot y
 	private float roll;// rot z
 
-	private Player player;
+	private Entity entity;
 
-	public Camera(Player player)
+	public Camera(Entity entity)
 	{
-		this.player = player;
+		this.entity = entity;
 	}
 
 	public void move()
@@ -28,7 +28,7 @@ public class Camera
 		float horizontalDistance = calculateHorizontalDistance();
 		float verticalDistance = calculateVerticalDistance();
 		calculateCameraPosition(horizontalDistance, verticalDistance);
-		this.yaw = 180 - (player.getRotY() + angleAroundPlayer);
+		this.yaw = 180 - (entity.getRotY() + angleAroundPlayer);
 	}
 
 	public Vector3f getPosition()
@@ -59,14 +59,14 @@ public class Camera
 	private void calculateCameraPosition(float horizDistance,
 			float verticDistance)
 	{
-		float theta = player.getRotY() + angleAroundPlayer;
+		float theta = entity.getRotY() + angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math
 				.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math
 				.cos(Math.toRadians(theta)));
-		position.x = player.getPosition().getX() - offsetX;
-		position.y = player.getPosition().getY() + verticDistance;
-		position.z = player.getPosition().getZ() - offsetZ;
+		position.x = entity.getPosition().getX() - offsetX;
+		position.y = entity.getPosition().getY() + verticDistance;
+		position.z = entity.getPosition().getZ() - offsetZ;
 	}
 
 	private float calculateHorizontalDistance()
