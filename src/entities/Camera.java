@@ -5,7 +5,7 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Camera
 {
-	private float distanceFromPlayer = 50;
+	private float distanceFromPlayer = 40;
 	private float angleAroundPlayer = 0;
 
 	private Vector3f position = new Vector3f(0, 0, 0);
@@ -13,11 +13,11 @@ public class Camera
 	private float yaw;// rot y
 	private float roll;// rot z
 
-	private Entity entity;
+	private Node node;
 
-	public Camera(Entity entity)
+	public Camera(Node node)
 	{
-		this.entity = entity;
+		this.node = node;
 	}
 
 	public void move()
@@ -28,7 +28,7 @@ public class Camera
 		float horizontalDistance = calculateHorizontalDistance();
 		float verticalDistance = calculateVerticalDistance();
 		calculateCameraPosition(horizontalDistance, verticalDistance);
-		this.yaw = 180 - (entity.getRotY() + angleAroundPlayer);
+		this.yaw = 180 - (node.getRotY() + angleAroundPlayer);
 	}
 
 	public Vector3f getPosition()
@@ -59,14 +59,14 @@ public class Camera
 	private void calculateCameraPosition(float horizDistance,
 			float verticDistance)
 	{
-		float theta = entity.getRotY() + angleAroundPlayer;
+		float theta = node.getRotY() + angleAroundPlayer;
 		float offsetX = (float) (horizDistance * Math
 				.sin(Math.toRadians(theta)));
 		float offsetZ = (float) (horizDistance * Math
 				.cos(Math.toRadians(theta)));
-		position.x = entity.getPosition().getX() - offsetX;
-		position.y = entity.getPosition().getY() + verticDistance;
-		position.z = entity.getPosition().getZ() - offsetZ;
+		position.x = node.getPosition().getX() - offsetX;
+		position.y = node.getPosition().getY() + verticDistance;
+		position.z = node.getPosition().getZ() - offsetZ;
 	}
 
 	private float calculateHorizontalDistance()
