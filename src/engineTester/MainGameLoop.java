@@ -16,7 +16,7 @@ import terrains.Terrain;
 import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
-import entities.Camera;
+import entities.EntityCamera;
 import entities.Entity;
 import entities.Light;
 import entities.Player;
@@ -73,7 +73,7 @@ public class MainGameLoop
 		
 		
 		
-		Camera camera = new Camera(player);
+		EntityCamera camera = new EntityCamera(player);
 		camera.setPosition(new Vector3f(0,2,0));
 		
 		MasterRenderer renderer = new MasterRenderer();
